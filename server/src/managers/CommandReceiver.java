@@ -84,6 +84,7 @@ public class CommandReceiver {
 //        Optional<SpaceMarine> optionalSpaceMarine =collectionManager.getSpaceMarineCollection().stream()
 //                .filter(spaceMarine -> spaceMarine.getId() == )
         SpaceMarine spaceMarine = (SpaceMarine) object;
+//        spaceMarine.setId(SpaceMarine.getUniqueId());
         collectionManager.add(spaceMarine);
         return new CommandResponse("Element added successfully", null);
     }
@@ -144,7 +145,7 @@ public class CommandReceiver {
                 .map(spaceMarine -> spaceMarine.getChapter())
                 .collect(Collectors.toList());
         List<Chapter> list = spaceMarines.stream()
-                .filter(chapter -> Collections.frequency(spaceMarines, chapter) == 1)
+                .filter(chapter -> Collections.frequency(spaceMarines, chapter.hashCode()) == 1)
                 .collect(Collectors.toList());
 
         return new CommandResponse("Unique chapter/s", list);

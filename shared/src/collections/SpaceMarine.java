@@ -5,14 +5,16 @@ import com.opencsv.bean.CsvBindByPosition;
 import other.Validatable;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 
 public class SpaceMarine implements Validatable, Serializable, Comparable<SpaceMarine> {
 
 //    @CsvBindByName(column = "UniqueID")
 //    @CsvBindByPosition(position = 0)
-    private static long uniqueId = 1;
+    private static long uniqueId;
 
 //    @CsvBindByName(column = "ID")
 //    @CsvBindByPosition(position = 1)
@@ -50,7 +52,7 @@ public class SpaceMarine implements Validatable, Serializable, Comparable<SpaceM
     private static String pattern = "yyyy-MM-dd HH:mm:ss.SSS";
 
     public SpaceMarine(String name, Coordinates coordinates, float health, AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
-        this.id = uniqueId++;
+        this.id = Instant.now().toEpochMilli();
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = new Date();

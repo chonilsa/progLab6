@@ -4,7 +4,7 @@ import collections.SpaceMarine;
 import managers.CollectionManager;
 import managers.CommandReceiver;
 
-@CommandInfo(name = "add", description = "Adds element to the collection if it's value is minimal. Syntax: add_if_min {element}", argsCount = 0, requiredObjectType = SpaceMarine.class)
+@CommandInfo(name = "add_if_min", description = "Adds element to the collection if it's value is minimal. Syntax: add_if_min {element}", argsCount = 0, requiredObjectType = SpaceMarine.class)
 public class AddIfMin extends AbstractCommand{
 
     private final CollectionManager collectionManager;

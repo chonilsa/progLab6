@@ -5,6 +5,7 @@ import com.opencsv.bean.CsvBindByPosition;
 import other.Validatable;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Chapter implements Validatable, Serializable {
 
@@ -53,5 +54,18 @@ public class Chapter implements Validatable, Serializable {
     @Override
     public String toString() {
         return name + "," + marinesCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Chapter chapter = (Chapter) o;
+        return marinesCount == chapter.marinesCount && name.equals(chapter.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, marinesCount);
     }
 }

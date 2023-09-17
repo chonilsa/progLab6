@@ -27,9 +27,8 @@ public class FileManager {
         OutputStreamWriter osw = null;
         CSVWriter csvWriter = null;
         ArrayList<SpaceMarine> list = new ArrayList<>();
-        for (int i = 0; i < collection.size(); i++) {
-            list.add(collection.peek());
-        }
+        collection.forEach(i -> list.add(i));
+//        Collections.sort(collection, );
         try {
 
             fos = new FileOutputStream((path));
