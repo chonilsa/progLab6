@@ -1,0 +1,5 @@
+rootProject.name = 'progLab6'
+include 'shared'
+include 'server'
+include 'client'
+

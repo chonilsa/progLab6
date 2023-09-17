@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'idea'
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+group = 'org.lab6'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets.main.java.srcDirs = ['src']
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation project(':shared')
+}
+
+application {
+    mainClass = 'main.Main'
+}
+
+run{
+    standardInput= System.in
+}
+
+jar {
+    manifest {
+        attributes("Main-Class": "main.Main",
+                "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(' ')
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'idea'
+}
+
+apply plugin : 'java'
+apply plugin : 'application'
+apply plugin : 'idea'
+//group = 'org.lab6'
+//version = '1.0-dev'
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets.main.java.srcDirs = ['src']
+
+
+application {
+    mainClassName = 'server.Application'
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation project(':shared')
+    implementation 'com.opencsv:opencsv:5.8'
+}
+
+//configurations.all {
+//    exclude group:"org.apache.geronimo.specs", module: "geronimo-servlet_2.5_spec"
+//    exclude group:"ch.qos.logback", module:"logback-core"
+//}
+
+jar {
+    manifest {
+        attributes("Main-Class": "server.Application",
+                "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(' ')
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

@@ -1,0 +1,29 @@
+plugins {
+    id 'java-library'
+}
+
+apply plugin : "java-library"
+version '1.0-final'
+group = 'org.lab6'
+
+repositories {
+    mavenCentral()
+}
+
+
+sourceSets.main.java.srcDirs = ['src']
+
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'com.opencsv:opencsv:5.8'
+}
+
+jar {
+
+    manifest {
+        attributes("Main-Class": "Main",
+                "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(' '))
+    }
+}
