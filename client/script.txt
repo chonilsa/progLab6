@@ -1,2 +1,12 @@
 help
 help
+add
+2
+2
+2
+2
+LIBRARIAN
+COMBI_PLASMA_GUN
+CHAIN_AXE
+2
+2

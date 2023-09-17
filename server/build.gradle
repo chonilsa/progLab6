@@ -34,6 +34,7 @@ dependencies {
 //}
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes("Main-Class": "server.Application",
                 "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(' ')

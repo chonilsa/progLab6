@@ -31,6 +31,7 @@ run{
 }
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes("Main-Class": "main.Main",
                 "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(' ')
