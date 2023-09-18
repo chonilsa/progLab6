@@ -28,6 +28,7 @@ public class FileManager {
         CSVWriter csvWriter = null;
         ArrayList<SpaceMarine> list = new ArrayList<>();
         collection.forEach(i -> list.add(i));
+//        Collections.reverse(list);
 //        Collections.sort(collection, );
         try {
 

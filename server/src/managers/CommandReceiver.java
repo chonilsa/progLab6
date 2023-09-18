@@ -141,14 +141,16 @@ public class CommandReceiver {
     }
 
     public CommandResponse printUniqueChapter(String[] args, Object object) {
-        List<Chapter> spaceMarines = Arrays.stream(collectionManager.getArray())
-                .map(spaceMarine -> spaceMarine.getChapter())
+        List<String> spaceMarines = Arrays.stream(collectionManager.getArray())
+                .map(spaceMarine -> spaceMarine.getChapter().getName() +","+spaceMarine.getChapter().getMarinesCount())
+                .distinct()
                 .collect(Collectors.toList());
-        List<Chapter> list = spaceMarines.stream()
-                .filter(chapter -> Collections.frequency(spaceMarines, chapter.hashCode()) == 1)
-                .collect(Collectors.toList());
+//        List<String> list = spaceMarines.stream()
+//                .map()
+//                .filter(chapter -> Collections.frequency(spaceMarines, chapter.hashCode()) == 1)
+//                .collect(Collectors.toList());
 
-        return new CommandResponse("Unique chapter/s", list);
+        return new CommandResponse("Unique chapter/s", spaceMarines);
 
     }
 

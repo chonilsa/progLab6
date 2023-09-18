@@ -24,8 +24,8 @@ public class CommandManager {
     }
 
     public List<String> getCommandHistory() {
-//                return commandHistory.subList(commandHistory.size() - Math.min(commandHistory.size(), 13), commandHistory.size());
-        return commandHistory;
+        return commandHistory.subList(commandHistory.size() - Math.min(commandHistory.size(), 13), commandHistory.size());
+//        return commandHistory;
     }
 
     public Map<String, AbstractCommand> getCommands() {
