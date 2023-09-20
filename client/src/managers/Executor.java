@@ -15,11 +15,18 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.Long.parseLong;
 
 public class Executor {
     private final List<String> recursionStack = new ArrayList<>();
     private final CommandManager commandManager;
     private Client client;
+
+    public String rnfile;
+
+    public String rncommand;
+
+    public boolean rnflag = true; // true - first time, false - second time
 
 
     public Executor(CommandManager commandManager, Console console, Client client) {
@@ -49,9 +56,16 @@ public class Executor {
                         status = Status.EXIT;
                         break;
                     } else if (command[0].equals("execute_script")) {
+                        rnflag = true;
                         status = scriptMode(command[1]);
+                        while (!rnflag) status = scriptMode(rnfile);
                     }
                     if (validateCommand(command)) {
+//                        for (String i: recursionStack){
+//                            if(i.equals(command[1])){
+//                                return;
+//                            }
+//                        }
                         CommandDescription description = commandManager.getCommand(command[0]);
                         Object object = null;
                         if (description.getRequiredObjectType() != Void.class) {
@@ -82,6 +96,9 @@ public class Executor {
     private boolean validateCommand(String[] command) {
         try {
             CommandDescription description = commandManager.getCommand(command[0]);
+            if (command[0].equals("execute_script")){
+                return true;
+            }
             if (description == null) {
                 System.out.println("Command not found");
                 return false;
@@ -92,7 +109,8 @@ public class Executor {
             }
             for (int i = 1; i < command.length; i++) {
                 try {
-                    parseInt(command[i]);
+//                    if (command[0].equals("execute_script")) return false;
+                    parseLong(command[i]);
                 } catch (NumberFormatException e) {
                     System.out.println("Wrong type of argument");
                     return false;
@@ -109,9 +127,10 @@ public class Executor {
         String[] command = new String[2];
         Status status = Status.OK;
         recursionStack.add(arg);
-        if (!new File(arg).exists()) {
-            arg = "../" + arg;
-        }
+//        if (!new File(arg).exists()) {
+//            arg = "../" + arg;
+//        }
+        rnfile = arg;
         Scanner defaultScanner = CommandParser.getScanner();
         try (Scanner scanner = new Scanner(new File(arg))) {
             if (!scanner.hasNextLine()) {
@@ -127,11 +146,15 @@ public class Executor {
                 while (scanner.hasNextLine() && command[0].isEmpty()) {
                     command = scanner.nextLine().trim().split(" ");
                 }
-                System.out.println("\nExecuting command: " + command[0]);
+                System.out.println("Executing command: " + command[0]);
                 if (command[0].equals("execute_script")) {
                     for (String s : recursionStack) {
                         if (s.equals(command[1])) throw new RecoursiveCallException();
                     }
+                    rnflag = false;
+                    rncommand = command[0];
+                    rnfile = command[1];
+                    return Status.OK;
                 }
 
                 if (command[0].equals("exit")) {
@@ -152,7 +175,12 @@ public class Executor {
                     CommandRequest request = new CommandRequest(command[0], args, object);
                     status = Status.OK;
                     manageResponse(request);
+//                    rnflag = true;
                     //somehow send request to server
+                } else {
+                    CommandParser.setScanner(defaultScanner);
+                    CommandParser.setConsoleMode();
+                    return Status.OK;
                 }
 
             } while (status == Status.OK && scanner.hasNextLine());
@@ -182,8 +210,9 @@ public class Executor {
             Object object1 = response.getObject();
             if (object1 instanceof Iterable<?>)
                 for (Object o : (Iterable<?>) object1) System.out.println(o.toString());
-            else System.out.println(object1.toString());
+            else System.out.println("file: " + object1.toString());
         }
+
     }
 
     public enum Status {

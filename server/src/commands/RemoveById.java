@@ -8,7 +8,7 @@ public class RemoveById extends AbstractCommand {
     private final CollectionManager collectionManager;
     private final CommandReceiver commandReceiver;
     public RemoveById(CollectionManager collectionManager, CommandReceiver commandReceiver) {
-        super("remove", "remove element from collection by id");
+        super("remove_by_id", "remove element from collection by id");
         this.collectionManager = collectionManager;
         this.commandReceiver = commandReceiver;
     }

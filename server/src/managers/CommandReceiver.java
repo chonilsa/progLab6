@@ -189,7 +189,13 @@ public class CommandReceiver {
                 .map(command -> CommandDescriptionFactory.createCommandDescription(command.getClass()))
                 .collect(Collectors.toList());
 
-        return new CommandResponse("Got commands", commandDescriptions);
+        return new CommandResponse("get commands", commandDescriptions);
+    }
+
+    public CommandResponse executeScript(String[] args, Object obj) {
+
+
+        return new CommandResponse("Executed script from file script:", args[0]);
     }
 
 //    public CommandResponse addElement(String[] args, Object obj) {

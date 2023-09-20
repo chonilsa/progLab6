@@ -33,7 +33,9 @@ public class Main {
         }
         CommandManager commandManager = new CommandManager(commandsArray);
         Executor executor = new Executor(commandManager, console, client);
-
+//        if (commandResponse.flag) {
+//            executor.scriptMode((String) commandResponse.getObject());
+//        }
         executor.consoleMode();
     }
 }
