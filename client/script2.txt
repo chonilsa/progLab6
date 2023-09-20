@@ -1,0 +1,5 @@
+info
+
+execute_script C:\\Users\\79534\\IdeaProjects\\progLab6\\client\\addfile.txt
+
+execute_script C:\\Users\\79534\\IdeaProjects\\progLab6\\client\\addfile.txt

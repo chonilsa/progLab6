@@ -4,6 +4,8 @@ package commands;
 import managers.CollectionManager;
 import managers.CommandReceiver;
 
+import java.io.File;
+
 @CommandInfo(name = "execute_script", description = "Execute script from file", argsCount = 1, argumentTypes = {String.class}, requiredObjectType = Void.class)
 public class ExecuteScript extends AbstractCommand {
 
@@ -27,6 +29,7 @@ public class ExecuteScript extends AbstractCommand {
             return new CommandResponse("Too many arguments, usage: execute_script <file_name>", false);
         }
         String fileName = args[0];
+//        if (!(new File(fileName).exists())) return new CommandResponse("Execution was terminated", false);
         return commandReceiver.executeScript(args, obj);
 //        return new CommandResponse("Executing script from file " + fileName, true);
     }

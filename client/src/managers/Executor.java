@@ -28,6 +28,7 @@ public class Executor {
 
     public boolean rnflag = true; // true - first time, false - second time
 
+    int cnter = 0;
 
     public Executor(CommandManager commandManager, Console console, Client client) {
 
@@ -56,9 +57,17 @@ public class Executor {
                         status = Status.EXIT;
                         break;
                     } else if (command[0].equals("execute_script")) {
-                        rnflag = true;
-                        status = scriptMode(command[1]);
-                        while (!rnflag) status = scriptMode(rnfile);
+
+                        scriptMode(command[1]);
+//                        rnflag = true;
+//                        do {
+//                            if (rnflag) {
+//                                status = scriptMode(command[1]);
+//                            } else {
+//                                status = scriptMode(rnfile);
+//                            }
+//                        }while (true);
+////                        while (!rnflag) status = scriptMode(rnfile);
                     }
                     if (validateCommand(command)) {
 //                        for (String i: recursionStack){
@@ -92,6 +101,8 @@ public class Executor {
             System.out.println(e.getMessage());
         }
     }
+
+
 
     private boolean validateCommand(String[] command) {
         try {
@@ -130,7 +141,7 @@ public class Executor {
 //        if (!new File(arg).exists()) {
 //            arg = "../" + arg;
 //        }
-        rnfile = arg;
+//        rnfile = arg;
         Scanner defaultScanner = CommandParser.getScanner();
         try (Scanner scanner = new Scanner(new File(arg))) {
             if (!scanner.hasNextLine()) {
@@ -148,13 +159,10 @@ public class Executor {
                 }
                 System.out.println("Executing command: " + command[0]);
                 if (command[0].equals("execute_script")) {
-                    for (String s : recursionStack) {
-                        if (s.equals(command[1])) throw new RecoursiveCallException();
-                    }
-                    rnflag = false;
-                    rncommand = command[0];
-                    rnfile = command[1];
-                    return Status.OK;
+//                    for (String s : recursionStack) {
+//                        if (s.equals(command[1])) throw new RecoursiveCallException();
+//                    }
+                    scriptMode(command[1]);
                 }
 
                 if (command[0].equals("exit")) {
@@ -184,7 +192,13 @@ public class Executor {
                 }
 
             } while (status == Status.OK && scanner.hasNextLine());
-
+//            while (scanner.nextLine().equals("execute_script") || scanner.nextLine().equals("")) {
+//                if (scanner.nextLine().equals("execute_script")) {
+//                    rnflag = true;
+//                    return status;
+//                }
+//            }
+//            recursionStack.remove(recursionStack.get(recursionStack.size() - 1));
             CommandParser.setScanner(defaultScanner);
             CommandParser.setConsoleMode();
             return status;
@@ -198,6 +212,7 @@ public class Executor {
         } finally {
             CommandParser.setScanner(defaultScanner);
             CommandParser.setConsoleMode();
+
         }
 
         return Status.ERROR;
@@ -214,6 +229,65 @@ public class Executor {
         }
 
     }
+
+
+//    public void scriptMode(String arg) {
+//        Scanner defaultScanner = CommandParser.getScanner();
+//        try (Scanner scanner = new Scanner(new File(arg))) {
+//            if (!scanner.hasNextLine()) {
+//                System.out.println("File is empty");
+//                System.out.println("");
+//            }
+//            do {
+//                String[] command = new String[2];
+//                command = scanner.nextLine().trim().split(" ");
+//                while (scanner.hasNextLine() && command[0].isEmpty()) {
+//                    command = scanner.nextLine().trim().split(" ");
+//                }
+//                if(!scanner.hasNextLine()) break;
+//
+//                System.out.println("Executing command: " + command[0]);
+//                if (command[0].equals("execute_script")) {
+//                    if(cnter > 500){
+//                        System.out.println("Stack ov");
+//                    }
+//                    else {
+//                        scriptMode(command[1]);
+//                    }
+//                }
+//                else if (command[0].equals("exit")) {
+//                    System.out.println("exiting");
+//                }
+//                else if (validateCommand(command)) {
+//                    CommandDescription description = commandManager.getCommand(command[0]);
+//                    //call needed asker
+//                    Object object = null;
+//                    if (description.getRequiredObjectType() != Void.class) {
+//                        AbstractAsker asker = AskerManager.getAsker(description.getRequiredObjectType());
+//                        object = asker.build();
+//                    }
+//                    String[] args = new String[command.length - 1];
+//                    System.arraycopy(command, 1, args, 0, command.length - 1);
+//
+//                    CommandRequest request = new CommandRequest(command[0], args, object);
+//                    manageResponse(request);
+//                }
+//
+//
+//            } while (scanner.hasNextLine());
+//
+//        } catch (FileNotFoundException e) {
+//            System.out.println("File not found");
+//        } catch (RecoursiveCallException e) {
+//            System.out.println("Recursion in script");
+//        } catch (InvalidObjectException | EmptyFieldException | IncorrectScriptInputException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            System.out.println("qwertyuio");
+//        }
+//        cnter--;
+//
+//    }
 
     public enum Status {
         OK,
